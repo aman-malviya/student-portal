@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const passport=require('passport');
 const LocalStrategy=require("passport-local").Strategy;
-const JWTStrategy=require("passport-jwt").Strategy;
+const JwtStrategy=require("passport-jwt").Strategy;
 const User=require("./models/User");
 // const passportLocalMongoose=require("passport-local-mongoose");
 
@@ -17,7 +17,7 @@ const cookieExtractor=req=>{
 }
 
 //to authorize
-passport.use(new JWTStrategy({
+passport.use(new JwtStrategy({
     jwtFromRequest:cookieExtractor,
     secretOrKey:"AmanMalviya"
 }, (payload, done)=>{

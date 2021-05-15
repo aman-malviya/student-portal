@@ -11,7 +11,8 @@ const mongoose=require("mongoose");
 
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
-const logOutRouter=require('./routes/logout')
+const logOutRouter=require('./routes/logout');
+const authenticateRouter=require("./routes/authenticate")
 
 const app = express();
 
@@ -44,6 +45,7 @@ db.once('open', function() {
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/logout', logOutRouter);
+app.use('/authenticate', authenticateRouter);
 
 
 // catch 404 and forward to error handler

@@ -1,5 +1,6 @@
 import {passwordStrength as PST} from 'check-password-strength'
 import {useEffect, useState} from 'react'
+
 export default function PassSt({pwd}){
     const [b1, setb1]=useState('rgba(0,0,0,0.1)');
     const [b2, setb2]=useState('rgba(0,0,0,0.1)');
