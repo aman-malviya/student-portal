@@ -1,19 +1,23 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors=require("cors");
-var mongoose=require("mongoose");
+require('dotenv').config()
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors=require("cors");
+const mongoose=require("mongoose");
+// const passportLocalMongoose=require('passport-local-mongoose');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var testAPIRouter = require("./routes/test-api");
 
-var app = express();
+const loginRouter = require('./routes/login');
+const registerRouter = require('./routes/register');
+const logOutRouter=require('./routes/logout')
+
+const app = express();
 
 //Mongoose Connection
-mongoose.connect("mongodb+srv://aman-malviya-admin:scarlett1403@cluster0.c7uvn.mongodb.net/Student-Portal?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.DATABASE, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.set('useCreateIndex', true);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,9 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/testAPI', testAPIRouter);
+
 
 //Mongoose database
 const db = mongoose.connection;
@@ -36,12 +38,13 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('mongoose properly connected');
 });
-const studentSchema = new mongoose.Schema({
-  name: String
-});
-const Student = mongoose.model('Student', studentSchema);
-const student1 = new Student({ name: 'Aman' });
-student1.save(err=>console.log(err));
+
+
+
+app.use('/login', loginRouter);
+app.use('/register', registerRouter);
+app.use('/logout', logOutRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

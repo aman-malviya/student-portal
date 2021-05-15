@@ -33,10 +33,10 @@ export default function PassSt({pwd}){
     }, [pwd])
     return (
         <div style={{'visibility':vis}} className='d-inline-block align-items-center'>
-            <div id='b-1' style={{'backgroundColor':b1, 'height':'5px', 'width':'50px', 'marginRight':'5px'}} className="d-inline-block shadow-sm rounded-pill"></div>
-            <div id='b-2' style={{'backgroundColor':b2, 'height':'5px', 'width':'50px', 'marginRight':'5px'}} className="d-inline-block shadow-sm rounded-pill"></div>
-            <div id='b-3' style={{'backgroundColor':b3, 'height':'5px', 'width':'50px', 'marginRight':'5px'}} className="d-inline-block shadow-sm rounded-pill"></div>
-            <p className="grey small">{flag}</p>
+            <div id='b-1' style={{'backgroundColor':b1, 'height':'12px', 'width':'12px', 'marginRight':'5px'}} className="d-inline-block shadow-sm rounded-pill"></div>
+            <div id='b-2' style={{'backgroundColor':b2, 'height':'12px', 'width':'12px', 'marginRight':'5px'}} className="d-inline-block shadow-sm rounded-pill"></div>
+            <div id='b-3' style={{'backgroundColor':b3, 'height':'12px', 'width':'12px', 'marginRight':'5px'}} className="d-inline-block shadow-sm rounded-pill"></div>
+            <p className="grey small d-inline">{flag}</p>
         </div>
     )
 }
