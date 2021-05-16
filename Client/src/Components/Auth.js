@@ -1,5 +1,5 @@
-import {useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useState, useEffect} from 'react'
+import {Redirect, useHistory} from 'react-router-dom'
 
 import PassSt from './PasswordStrength';
 
@@ -11,8 +11,22 @@ export default function Register(){
         const [actualName, setActualname]=useState("");
         const [email, setEmail]=useState("");
 
+        //auth
+        const [isAuthenticated, setisAuthenticated] = useState(false)
 
-        const switchPanel=()=>{
+        useEffect(() => {
+            fetch("/authenticate")
+                .then(res=>res.json())
+                .then(res=>{
+                    setisAuthenticated(res.isAuthenticated);
+                })
+        }, [])
+
+        const switchPanel=(e)=>{
+            e.preventDefault();
+            setPwd("");
+            setActualname("");
+            setEmail("");
             setSignUp((prevPanel)=>!prevPanel);
         } 
 
@@ -21,7 +35,7 @@ export default function Register(){
             if(signUp){
                 const requestOptions={
                     method:'POST',
-                    headers:{'Content-Type':'application/json', 'Authorization':'AmanMalviya' +  this.token},
+                    headers:{'Content-Type':'application/json'},
                     body:JSON.stringify({
                         username:email,
                         password:pwd,
@@ -55,6 +69,9 @@ export default function Register(){
             }
         }
         return (
+            isAuthenticated?
+            <Redirect to="/" />
+            :
             <div class="overflow-hidden">
                 <div class="row no-gutters min-vh-100">
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center align-items-center flex-row">

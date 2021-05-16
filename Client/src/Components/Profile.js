@@ -1,5 +1,5 @@
-import React from 'react'
-import {useHistory} from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import {useHistory, Redirect} from 'react-router-dom'
 
 const Profile = () => {
     const history=useHistory();
@@ -12,12 +12,25 @@ const Profile = () => {
                 }
             })
     }
+
+    const [isAuthenticated, setisAuthenticated] = useState(false);
+
+    useEffect(() => {
+        fetch("/authenticate")
+            .then(res=>res.json())
+            .then(res=>{
+                setisAuthenticated(res.isAuthenticated);
+            })
+    }, [])
     
     return (
+        isAuthenticated?
         <div>
-            Hello chutiye
+            Hello
             <button onClick={logout}>Logout</button>
         </div>
+        :
+        <Redirect to="/auth" />
     )
 }
 
