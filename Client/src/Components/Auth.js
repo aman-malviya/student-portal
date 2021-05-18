@@ -1,5 +1,7 @@
 import {useState, useEffect} from 'react'
-import {Redirect, useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import PassSt from './PasswordStrength';
 
@@ -7,20 +9,18 @@ export default function Register(){
         const history=useHistory();
         const [signUp, setSignUp]=useState(true);
         const [pwd, setPwd]=useState("");
-        const [message, setMessage]=useState("");
         const [actualName, setActualname]=useState("");
         const [email, setEmail]=useState("");
 
         //auth
-        const [isAuthenticated, setisAuthenticated] = useState(false)
-
-        useEffect(() => {
+         useEffect(() => {
             fetch("/authenticate")
                 .then(res=>res.json())
                 .then(res=>{
-                    setisAuthenticated(res.isAuthenticated);
+                    if(res.isAuthenticated)
+                        history.push("/");
                 })
-        }, [])
+        }, [history])
 
         const switchPanel=(e)=>{
             e.preventDefault();
@@ -46,10 +46,28 @@ export default function Register(){
                 fetch('/register', requestOptions)
                     .then(res => res.json())
                     .then(res=> {
-                        if(message.msgError)
-                            setMessage(res.message.msgBody);
-                        else
-                            history.push("/");
+                        if(res.message.msgError)
+                            toast.info(res.message.msgBody, {
+                                position: window.innerWidth<600?"bottom-center":"bottom-left",
+                                autoClose: 4000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
+                        else{
+                            toast.success(res.message.msgBody + " Login to continue.", {
+                                position: window.innerWidth<600?"bottom-center":"bottom-left",
+                                autoClose: 4000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
+                            setSignUp(false);
+                        }
                     });
             }else{
                 const requestOptions={
@@ -63,15 +81,21 @@ export default function Register(){
                 fetch('/login', requestOptions)
                     .then(res => res.json())
                     .then(res=> {
-                        setMessage(res.isAuthenticated);
-                        history.push("/");
+                        if(res.isAuthenticated){
+                            history.push("/");
+                        }
                     });
             }
         }
+
+        const googleAuth=()=>{
+            window.open("http://localhost:9000/auth/google")
+        }
+        const fbAuth=()=>{
+            window.open("http://localhost:9000/auth/facebook")
+        }
+
         return (
-            isAuthenticated?
-            <Redirect to="/" />
-            :
             <div class="overflow-hidden">
                 <div class="row no-gutters min-vh-100">
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center align-items-center flex-row">
@@ -107,9 +131,9 @@ export default function Register(){
                                 <div  style={{'height':'0.5px', 'width':'47%', 'backgroundColor':'#555555'}}></div>
                             </div>
                             <div className="d-flex justify-content-center">
-                                <button style={{'backgroundColor':'#fff'}} type="submit" className="btn mt-3 mx-2 shadow grey"><img alt="google" src="Assets/google.png" height="15px" /></button>
+                                <button onClick={googleAuth} style={{'backgroundColor':'#fff'}} type="submit" className="btn mt-3 mx-2 shadow grey"><img alt="google" src="Assets/google.png" height="15px" /></button>
                                 <button style={{'backgroundColor':'#0e76a8', 'color':'#fff'}} type="submit" className="btn mx-2 mt-3 shadow"><i class="fab fa-linkedin-in"></i></button>
-                                <button style={{'backgroundColor':'#3b5998', 'color':'#fff'}} type="submit" className="btn mt-3 mx-2 shadow"><i class="fab fa-facebook-f"></i></button>
+                                <button onClick={fbAuth} style={{'backgroundColor':'#3b5998', 'color':'#fff'}} type="submit" className="btn mt-3 mx-2 shadow"><i class="fab fa-facebook-f"></i></button>
                             </div>    
                             <p className="mt-3 grey small text-center">
                                 {signUp?
@@ -128,7 +152,7 @@ export default function Register(){
                                     </span>
                                 }
                             </p> 
-                            {message}  
+                            <ToastContainer />
                         </div>
                     </div>
                     <div class="col-lg-8 d-md-block d-lg-block d-none col-md-6 login-bg"></div>

@@ -3,10 +3,17 @@ const app = express();
 const passport=require('passport');
 const LocalStrategy=require("passport-local").Strategy;
 const JwtStrategy=require("passport-jwt").Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+
+const findOrCreate=require("mongoose-findorcreate");
+require('dotenv').config()
+
 const User=require("./models/User");
 // const passportLocalMongoose=require("passport-local-mongoose");
 
 app.use(passport.initialize());
+app.use(passport.session());
 
 const cookieExtractor=req=>{
     let token=null;
@@ -55,3 +62,31 @@ passport.deserializeUser(function(id, done) {
       done(err, user);
     });
 });
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:9000/auth/google/authenticate",
+    userProfileURL:"https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log(profile);
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
+passport.use(new FacebookStrategy({
+  clientID: process.env.FACEBOOK_CLIENT_ID,
+  clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+  callbackURL: "http://localhost:3000/auth/facebook/callback",
+  profileFields: ['id', 'displayName', 'photos', 'email']
+},
+function(accessToken, refreshToken, profile, cb) {
+  console.log(profile);
+  User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+    return cb(err, user);
+  });
+}
+));

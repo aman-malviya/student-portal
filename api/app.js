@@ -13,6 +13,10 @@ const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const logOutRouter=require('./routes/logout');
 const authenticateRouter=require("./routes/authenticate")
+const googleAuthRouter=require('./routes/googleAuth')
+const googleAuthCallbackRouter=require('./routes/googleAuthCallback')
+const facebookAuthRouter=require('./routes/fbAuth')
+const facebookAuthCallbackRouter=require('./routes/fbAuthCallback')
 
 const app = express();
 
@@ -46,6 +50,10 @@ app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/logout', logOutRouter);
 app.use('/authenticate', authenticateRouter);
+app.use('/auth/google', googleAuthRouter);
+app.use('/auth/google/authenticate', googleAuthCallbackRouter);
+app.use('/auth/facebook', facebookAuthRouter);
+app.use('/auth/facebook/authenticate', facebookAuthCallbackRouter);
 
 
 // catch 404 and forward to error handler

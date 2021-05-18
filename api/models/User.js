@@ -1,6 +1,7 @@
 // const passportLocalMongoose=require('passport-local-mongoose');
 const mongoose=require('mongoose');
 const bcrypt = require('bcrypt');
+const findOrCreate=require("mongoose-findorcreate");
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema({
         required:true
     }
   });
-//   User.plugin(passportLocalMongoose);
+  userSchema.plugin(findOrCreate);
 
   userSchema.pre('save', function(next){
       if(!this.isModified('password')){
