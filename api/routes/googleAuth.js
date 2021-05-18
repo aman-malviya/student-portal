@@ -3,6 +3,6 @@ const passport = require("passport");
 const router = express.Router();
 
 router.get('/',
-  passport.authenticate('google', { scope: ['profile'] }));
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 module.exports=router;

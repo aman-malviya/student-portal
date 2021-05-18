@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {useHistory} from 'react-router-dom'
+import {Redirect, useHistory} from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,17 +13,18 @@ export default function Register(){
         const [email, setEmail]=useState("");
 
         //auth
-         useEffect(() => {
+        const [isAuthenticated, setisAuthenticated]=useState(false);
+        useEffect(() => {
             fetch("/authenticate")
                 .then(res=>res.json())
                 .then(res=>{
-                    if(res.isAuthenticated)
-                        history.push("/");
+                    if(res.isAuthenticated){
+                        setisAuthenticated(res.isAuthenticated);
+                    }
                 })
-        }, [history])
+        }, [])
 
-        const switchPanel=(e)=>{
-            e.preventDefault();
+        const switchPanel=()=>{
             setPwd("");
             setActualname("");
             setEmail("");
@@ -95,7 +96,9 @@ export default function Register(){
             window.open("http://localhost:9000/auth/facebook")
         }
 
-        return (
+        return (isAuthenticated?
+            <Redirect to="/" />
+            :
             <div class="overflow-hidden">
                 <div class="row no-gutters min-vh-100">
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center align-items-center flex-row">
@@ -109,16 +112,16 @@ export default function Register(){
                             <p style={{'padding':'0 15%'}} className="text-center grey">Hello there! {signUp?"Sign Up":"Sign In"} and start managing your profile.</p>
                             <form>
                                 {signUp?<div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label grey small">Name</label>
-                                    <input type="text" onChange={(e)=>setActualname(e.target.value)} class="d-block w-100" aria-describedby="emailHelp" />
+                                    <label class="form-label grey small">Name</label>
+                                    <input value={actualName} type="text" onChange={(e)=>setActualname(e.target.value)} class="d-block w-100" aria-describedby="emailHelp" />
                                 </div>:<div></div>}
                                 <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label grey small">Email</label>
-                                    <input type="email" onChange={(e)=>setEmail(e.target.value)} class="d-block w-100" aria-describedby="emailHelp" />
+                                    <label class="form-label grey small">Email</label>
+                                    <input value={email} type="email" onChange={(e)=>setEmail(e.target.value)} class="d-block w-100" aria-describedby="emailHelp" />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="exampleInputPassword1" class="form-label grey small">Password</label>
-                                    <input value={pwd} onChange={e=>setPwd(e.target.value)} type="password" class="d-block w-100" id="exampleInputPassword1" />
+                                    <label class="form-label grey small">Password</label>
+                                    <input value={pwd} onChange={e=>setPwd(e.target.value)} type="password" class="d-block w-100" />
                                 </div>
                                 {signUp?<div className='pt-1 d-inline-block'>
                                     <PassSt pwd={pwd} />

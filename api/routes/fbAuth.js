@@ -2,7 +2,6 @@ const express=require('express');
 const passport = require("passport");
 const router = express.Router();
 
-router.get('/',
-  passport.authenticate('facebook', { scope: ['profile'] }));
+router.get("/", passport.authenticate("facebook"));
 
 module.exports=router;
