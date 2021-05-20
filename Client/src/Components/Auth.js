@@ -7,7 +7,7 @@ import PassSt from './PasswordStrength';
 
 export default function Register(){
         const history=useHistory();
-        const [signUp, setSignUp]=useState(true);
+        const [signUp, setSignUp]=useState(false);
         const [pwd, setPwd]=useState("");
         const [actualName, setActualname]=useState("");
         const [email, setEmail]=useState("");
@@ -80,7 +80,7 @@ export default function Register(){
                     })
                 }
                 fetch('/login', requestOptions)
-                    .then(res => res.json())
+                    .then(res=>res.json())
                     .then(res=> {
                         if(res.isAuthenticated){
                             history.push("/");

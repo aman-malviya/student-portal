@@ -34,13 +34,13 @@ const Profile = () => {
                 <button style={{'background':'none', 'textAlign':'left', 'color':'#555555','border':'0' ,'borderLeft':'4px solid #0e76a8'}} className="w-100 d-block my-3 px-5 py-2"><i class="fad fa-user pe-4"></i> Profile</button>
                 <button style={{'background':'none', 'textAlign':'left', 'color':'#555555'}} className="w-100 d-block border-0 my-3 px-5 py-2"><i class="far fa-chalkboard pe-3"></i> Dashboard</button>
                 <button style={{'background':'none', 'textAlign':'left', 'color':'#555555'}} className="w-100 d-block border-0 my-3 px-5 py-2"><i class="far fa-cog pe-4"></i> Settings</button>
-                <button style={{'background':'none', 'textAlign':'left', 'color':'#b82925'}} className="w-100 d-block border-0 my-3 px-5 py-2 position-absolute bottom-0"><i class="fad fa-sign-out pe-4"></i> Sign Out</button>
+                <button onClick={logout} style={{'background':'none', 'textAlign':'left', 'color':'#b82925'}} className="w-100 d-block border-0 my-3 px-5 py-2 position-absolute bottom-0"><i class="fad fa-sign-out pe-4"></i> Sign Out</button>
             </div>
             <div className="col-lg-2 bg-warning">
             
             </div>
             <div className="col-lg-8 bg-info">
-            
+                <h1>Profile</h1>
             </div>
         </div>
         :
