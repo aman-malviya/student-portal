@@ -95,6 +95,9 @@ export default function Register(){
         const fbAuth=()=>{
             window.open("http://localhost:9000/auth/facebook")
         }
+        const linkedinAuth=()=>{
+            window.open("http://localhost:9000/auth/linkedin")
+        }
 
         return (isAuthenticated?
             <Redirect to="/" />
@@ -135,7 +138,7 @@ export default function Register(){
                             </div>
                             <div className="d-flex justify-content-center">
                                 <button onClick={googleAuth} style={{'backgroundColor':'#fff'}} type="submit" className="btn mt-3 mx-2 shadow grey"><img alt="google" src="Assets/google.png" height="15px" /></button>
-                                <button style={{'backgroundColor':'#0e76a8', 'color':'#fff'}} type="submit" className="btn mx-2 mt-3 shadow"><i class="fab fa-linkedin-in"></i></button>
+                                <button onClick={linkedinAuth} style={{'backgroundColor':'#0e76a8', 'color':'#fff'}} type="submit" className="btn mx-2 mt-3 shadow"><i class="fab fa-linkedin-in"></i></button>
                                 <button onClick={fbAuth} style={{'backgroundColor':'#3b5998', 'color':'#fff'}} type="submit" className="btn mt-3 mx-2 shadow"><i class="fab fa-facebook-f"></i></button>
                             </div>    
                             <p className="mt-3 grey small text-center">

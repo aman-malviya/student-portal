@@ -17,6 +17,8 @@ const googleAuthRouter=require('./routes/googleAuth')
 const googleAuthCallbackRouter=require('./routes/googleAuthCallback')
 const facebookAuthRouter=require('./routes/fbAuth')
 const facebookAuthCallbackRouter=require('./routes/fbAuthCallback')
+const linkedinAuthRouter=require('./routes/linkedinAuth')
+const linkedinAuthCallbackRouter=require('./routes/linkedinAuthCallback')
 
 const app = express();
 
@@ -54,6 +56,8 @@ app.use('/auth/google', googleAuthRouter);
 app.use('/auth/google/authenticate', googleAuthCallbackRouter);
 app.use('/auth/facebook', facebookAuthRouter);
 app.use('/auth/facebook/authenticate', facebookAuthCallbackRouter);
+app.use('/auth/linkedin', linkedinAuthRouter);
+app.use('/auth/linkedin/authenticate', linkedinAuthCallbackRouter);
 
 
 // catch 404 and forward to error handler

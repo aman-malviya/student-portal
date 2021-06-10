@@ -5,6 +5,7 @@ const LocalStrategy=require("passport-local").Strategy;
 const JwtStrategy=require("passport-jwt").Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 
 const findOrCreate=require("mongoose-findorcreate");
 require('dotenv').config()
@@ -106,3 +107,14 @@ passport.use(
     }
   )
 );
+
+passport.use(new LinkedInStrategy({
+  clientID: process.env.LINKEDIN_CLIENT_ID,
+  clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+  callbackURL: "http://localhost:9000/auth/linkedin/authenticate",
+  scope: ['r_emailaddress', 'r_liteprofile'],
+}, function(accessToken, refreshToken, profile, done) {
+  process.nextTick(function () {
+    return done(null, profile);
+  });
+}));
